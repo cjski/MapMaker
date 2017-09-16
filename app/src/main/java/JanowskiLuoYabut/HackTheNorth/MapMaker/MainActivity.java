@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private long startClickTime;
     private int currentMode = 1;
-    TextView modeTextView;
+    Button endPathButton;
     public int xInt1;
     public int yInt1;
     public int xInt2;
@@ -29,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
     boolean point = false;
     ImageView iv;
     Bitmap bm;
+    public Node[][] grid;
 
     public void DrawLine() {
-
         int x0 = xInt2;
         int x1 = xInt1;
         int y0 = yInt2;
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         initViews();
     }
 
@@ -104,20 +106,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (currentMode == 1) {
-            modeTextView.setText("Draw Mode");
+            endPathButton.setText("End Path");
         } else {
-            modeTextView.setText("Path Mode");
+            endPathButton.setText("Get Shortest Path");
         }
     }
 
     public void initViews() {
-        modeTextView = (TextView) findViewById(R.id.text_view_mode);
+        endPathButton = (Button) findViewById(R.id.end_path_button);
         Button drawModeButton = (Button) findViewById(R.id.draw_mode_button);
         drawModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 currentMode = 1;
-                modeTextView.setText("Draw Mode");
+                endPathButton.setText("End Path");
+                endPathButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        xInt1 = -1;
+                        xInt2 = -1;
+                        yInt1 = -1;
+                        yInt2 = -1;
+                    }
+                });
             }
         });
 
@@ -126,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 currentMode = 2;
-                modeTextView.setText("Path Mode");
+                endPathButton.setText("Get Shortest Path");
             }
         });
 
@@ -137,7 +148,15 @@ public class MainActivity extends AppCompatActivity {
         bm = Bitmap.createScaledBitmap(originalBitMap, 4000, 4000, false);
         iv.setImageBitmap(bm);
 
-        // Listens for touch events in the ImageView
+        //generate grid of nodes
+        grid = new Node[bm.getWidth()/4][bm.getHeight()/4];
+        for (int i = 0; i < bm.getWidth()/4; i++) {
+            for (int j = 0; j < bm.getHeight(); j++) {
+                grid[i][j] = new Node(i,j,true);
+            }
+        }
+
+        // Initial touch event in the ImageView
         View.OnTouchListener otl = new View.OnTouchListener() {
             Matrix inverse = new Matrix();
 
@@ -148,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
                         event.getX(), event.getY()
                 };
                 inverse.mapPoints(pts);
+
 
                 if (currentMode == 1) {
                     // The following conditionals allow differentiation between a tap and a drag gesture
@@ -179,6 +199,37 @@ public class MainActivity extends AppCompatActivity {
                 } else if (currentMode == 2) {
                     Toast.makeText(MainActivity.this, "Will be implemented later", Toast.LENGTH_SHORT).show();
                 }
+
+                // The coordinates for the pixel
+                if (!point) {
+                    xInt1 = Math.round(pts[0]);
+                    yInt1 = Math.round(pts[1]);
+                    Log.v("Y value", String.valueOf(yInt1));
+                } else {
+                    xInt2 = Math.round(pts[0]);
+                    yInt2 = Math.round(pts[1]);
+                    Log.v("Y value", String.valueOf(bm.getHeight()));
+                }
+
+                if (point) {
+                    DrawLine();
+                }
+
+                if (point) {
+                    point = false;
+                } else {
+                    point = true;
+                }
+
+                /*
+                // Reference for setting pixel color
+                for(int i = 0; i < xInt1; i++) {
+                    for(int j = 0; j < yInt1; j++) {
+                        bm.setPixel(i, j, Color.rgb(255,0,0));
+                        iv.setImageBitmap(bm);
+                    }
+                }
+                */
                 return true;
             }
         };
