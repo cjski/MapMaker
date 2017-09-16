@@ -82,9 +82,9 @@ public class MainActivity extends AppCompatActivity {
                     bm.setPixel(i, j, Color.rgb(255, 0, 0));
                 }
             }
-            grid[x1/75][y1/75].walkable = true;
-            grid[(x1+10)/75][y1/75].walkable = true;
-            grid[(x1-10)/75][y1/75].walkable = true;
+            grid[x1/75][y1/75] = new Node(x1/75,y1/75);
+            grid[(x1+10)/75][y1/75] = new Node((x1+10)/75,y1/75);
+            grid[(x1-10)/75][y1/75] = new Node((x1-10)/75,y1/75);
 
             numerator += shortest;
             if (!(numerator<longest)) {
@@ -154,17 +154,18 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if (mNodes.size() > 1) {
                             for (int i = 0; i < mNodes.size() - 1; i++) {
-                                ArrayList<Node> path = mAstar.getShortestPath(mNodes.get(i), mNodes.get(i + 1), grid, bm.getWidth()/75, bm.getHeight()/75);
+                                mAstar.getShortestPath(mNodes.get(i), mNodes.get(i + 1), grid, bm.getWidth()/75, bm.getHeight()/75,iv,bm);
 
-                                for (Node n0:path) {
-                                    for (int j = 75*n0.x - 20; j < 75*n0.x + 20; j++) {
-                                        for (int k = 75*n0.y - 20; k < 75*n0.y + 20; k++) {
-                                            bm.setPixel(j, k, Color.rgb(0, 0, 255));
+                                for(int n=0;n<bm.getWidth()/75;n++){
+                                    for (int m = 0; m < bm.getHeight()/75; m++) {
+                                        if(grid[n][m] != null){
+                                            grid[n][m].parent = null;
+                                            grid[n][m].sCost = 0;
+                                            grid[n][m].eCost = 0;
+                                            grid[n][m].tCost = 0;
                                         }
                                     }
-                                    iv.setImageBitmap(bm);
                                 }
-                                path = null;
                             }
                         }
                     }
@@ -181,12 +182,13 @@ public class MainActivity extends AppCompatActivity {
 
         //generate grid of nodes
         grid = new Node[bm.getWidth()/75][bm.getHeight()/75];
+        /*
         for (int i = 0; i < bm.getWidth()/75; i++) {
             for (int j = 0; j < bm.getHeight()/75; j++) {
                 grid[i][j] = new Node(i,j,false);
             }
         }
-
+        */
         // Initial touch event in the ImageView
         View.OnTouchListener otl = new View.OnTouchListener() {
             Matrix inverse = new Matrix();
@@ -264,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
                         if (System.currentTimeMillis() - startClickTime < ViewConfiguration.getTapTimeout()) {
                             int xPos = Math.round(pts[0]);
                             int yPos = Math.round(pts[1]);
-                            if (grid[xPos/75][yPos/75].walkable) {
+                            if (grid[xPos/75][yPos/75] != null) {
                                 mNodes.add(grid[ xPos / 75][(yPos / 75)]);
                                 for (int i = xPos - 20; i < xPos + 20; i++) {
                                     for (int j = yPos - 20; j < yPos + 20; j++) {
