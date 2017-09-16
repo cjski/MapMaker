@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initViews() {
-        endPathButton = (Button) findViewById(R.id.text_view_mode);
+        endPathButton = (Button) findViewById(R.id.end_path_button);
         Button drawModeButton = (Button) findViewById(R.id.draw_mode_button);
         drawModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
