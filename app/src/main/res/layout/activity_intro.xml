@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="JanowskiLuoYabut.HackTheNorth.MapMaker.IntroActivity"
+    android:orientation="vertical"
+    android:background="#f2f5f9"
+    android:weightSum="1">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="&#xA; &#xA; &#xA; Welcome to Map Maker! &#xA;"
+        android:textAlignment="center"
+        android:textColor="#3d3d3d"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/example_input"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="sans-serif"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        android:hint="Start with Map Maker by choosing an image of your map.
+&#xA; &#xA;
+Select 'Draw Mode' to begin tracing your walkable paths. To create multiple walkable paths, simply select 'End Path', and then tap 'Draw Mode' once again to get started on a new path.
+&#xA; &#xA;
+Once you're done drawing your paths, select 'Path Mode' and begin choosing the locations on your map you would like to visit.
+&#xA; &#xA;
+Finally, tap 'Get Shortest Path' and the shortest possible route passing all your checkpoints will appear on your map!" />
+</LinearLayout>

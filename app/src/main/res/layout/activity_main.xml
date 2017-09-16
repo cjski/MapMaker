@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorPrimary">
 
     <HorizontalScrollView
         android:layout_width="match_parent"
@@ -37,6 +38,13 @@
             android:layout_height="wrap_content"
             android:text="Path Mode"
             android:id="@+id/path_mode_button"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Help"
+            android:id="@+id/help_button"/>
     </LinearLayout>
 
     <Button
