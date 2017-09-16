@@ -35,13 +35,6 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Node Mode"
-            android:id="@+id/node_mode_button"/>
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
             android:text="Path Mode"
             android:id="@+id/path_mode_button"/>
     </LinearLayout>

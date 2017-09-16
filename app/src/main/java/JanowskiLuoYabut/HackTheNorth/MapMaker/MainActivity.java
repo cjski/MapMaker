@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private long startClickTime;
     private int currentMode = 1;
+    TextView modeTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +31,18 @@ public class MainActivity extends AppCompatActivity {
         initViews();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (currentMode == 1) {
+            modeTextView.setText("Draw Mode");
+        } else {
+            modeTextView.setText("Path Mode");
+        }
+    }
+
     public void initViews() {
-        final TextView modeTextView = (TextView) findViewById(R.id.text_view_mode);
-        modeTextView.setText("Draw Mode");
+        modeTextView = (TextView) findViewById(R.id.text_view_mode);
         Button drawModeButton = (Button) findViewById(R.id.draw_mode_button);
         drawModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,19 +51,12 @@ public class MainActivity extends AppCompatActivity {
                 modeTextView.setText("Draw Mode");
             }
         });
-        Button nodeModeButton = (Button) findViewById(R.id.node_mode_button);
-        nodeModeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                currentMode = 2;
-                modeTextView.setText("Node Mode");
-            }
-        });
+
         Button pathModeButton = (Button) findViewById(R.id.path_mode_button);
         pathModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentMode = 3;
+                currentMode = 2;
                 modeTextView.setText("Path Mode");
             }
         });
@@ -98,10 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } else if (currentMode == 2) {
                     Toast.makeText(MainActivity.this, "Will be implemented later", Toast.LENGTH_SHORT).show();
-                } else if (currentMode == 3) {
-                    Toast.makeText(MainActivity.this, "Shall be implemented too", Toast.LENGTH_SHORT).show();
                 }
-
                 return true;
             }
         };
