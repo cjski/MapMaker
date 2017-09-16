@@ -164,18 +164,18 @@ public class Astar {
 				//Keeps adding nodes into the path backwards
 				while(curr.parent != null){
 
-					for (int j = 75*curr.x - 20; j < 75*curr.x + 20; j++) {
-						for (int k = 75*curr.y - 20; k < 75*curr.y + 20; k++) {
-							bm.setPixel(j, k, Color.rgb(0, 0, 255));
+					for (int j = 25*curr.x - 7; j < 25*curr.x + 7; j++) {
+						for (int k = 25*curr.y - 7; k < 25*curr.y + 7; k++) {
+                            bm.setPixel(j, k, Color.rgb(198, 42, 42));
 						}
 					}
 					iv.setImageBitmap(bm);
 					curr = curr.parent;
 				}
 				//Adds the last node into the path
-				for (int j = 75*curr.x - 20; j < 75*curr.x + 20; j++) {
-					for (int k = 75 * curr.y - 20; k < 75 * curr.y + 20; k++) {
-						bm.setPixel(j, k, Color.rgb(0, 0, 255));
+				for (int j = 25*curr.x - 7; j < 25*curr.x + 7; j++) {
+					for (int k = 25 * curr.y - 7; k < 25 * curr.y + 7; k++) {
+						bm.setPixel(j, k, Color.rgb(198, 42, 42));
 					}
 				}
 				return;
