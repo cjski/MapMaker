@@ -1,5 +1,6 @@
 package JanowskiLuoYabut.HackTheNorth.MapMaker;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,14 +29,13 @@ public class MainActivity extends AppCompatActivity {
     public int yInt1;
     public int xInt2;
     public int yInt2;
-    boolean point = false;
     ImageView iv;
     Bitmap bm;
     ArrayList<Node> mNodes = new ArrayList<Node>();
     Astar mAstar = new Astar();
 
     public Node[][] grid;
-  
+
     public void DrawLine() {
         int x0 = xInt2;
         int x1 = xInt1;
@@ -123,6 +123,16 @@ public class MainActivity extends AppCompatActivity {
         if (currentMode == 0) {
             endPathButton.setVisibility(View.GONE);
         }
+
+        Button helpButton = (Button) findViewById(R.id.help_button);
+        helpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, IntroActivity.class);
+                startActivity(intent);
+            }
+        });
+
         Button drawModeButton = (Button) findViewById(R.id.draw_mode_button);
         drawModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,33 +238,8 @@ public class MainActivity extends AppCompatActivity {
                                 DrawLine();
                                 xInt1 = xInt2;
                                 yInt1 = yInt2;
-                                /*
-                                if(point)
-                                    point = false;
-                                else if (!point)
-                                    point = true;
-                                */
                             }
 
-                            /*
-                            if (!point) {
-                                xInt1 = Math.round(pts[0]);
-                                yInt1 = Math.round(pts[1]);
-                            } else {
-                                xInt2 = Math.round(pts[0]);
-                                yInt2 = Math.round(pts[1]);
-                            }
-
-                            if (point) {
-                                DrawLine();
-                            }
-
-                            if (point) {
-                                point = false;
-                            } else {
-                                point = true;
-                            }
-                            */
                         } else {
                             return false;
                         }
