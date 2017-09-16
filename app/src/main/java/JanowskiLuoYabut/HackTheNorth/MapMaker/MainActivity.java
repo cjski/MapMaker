@@ -30,8 +30,9 @@ public class MainActivity extends AppCompatActivity {
     boolean point = false;
     ImageView iv;
     Bitmap bm;
-    public Node[][] grid;
 
+    public Node[][] grid;
+  
     public void DrawLine() {
         int x0 = xInt2;
         int x1 = xInt1;
