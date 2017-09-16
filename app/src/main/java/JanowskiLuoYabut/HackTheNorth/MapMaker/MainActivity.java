@@ -10,13 +10,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 
 public class MainActivity extends AppCompatActivity {
 
+    private long startClickTime;
+    private int currentMode = 1;
+    Button endPathButton;
     public int xInt1;
     public int yInt1;
     public int xInt2;
@@ -26,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
     Bitmap bm;
 
     public void DrawLine() {
-        iv.setImageBitmap(bm);
-
         int x0 = xInt2;
         int x1 = xInt1;
         int y0 = yInt2;
@@ -93,9 +97,54 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        initViews();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (currentMode == 1) {
+            endPathButton.setText("End Path");
+        } else {
+            endPathButton.setText("Get Shortest Path");
+        }
+    }
+
+    public void initViews() {
+        endPathButton = (Button) findViewById(R.id.text_view_mode);
+        Button drawModeButton = (Button) findViewById(R.id.draw_mode_button);
+        drawModeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentMode = 1;
+                endPathButton.setText("End Path");
+                endPathButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        xInt1 = -1;
+                        xInt2 = -1;
+                        yInt1 = -1;
+                        yInt2 = -1;
+                    }
+                });
+            }
+        });
+
+        Button pathModeButton = (Button) findViewById(R.id.path_mode_button);
+        pathModeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentMode = 2;
+                endPathButton.setText("Get Shortest Path");
+            }
+        });
+
         iv = (ImageView) findViewById(R.id.map_image);
         // Create a MUTABLE bitmap
-        bm = getMutableBitmap(getResources(), R.drawable.map_colour);
+        final Bitmap originalBitMap = getMutableBitmap(getResources(), R.drawable.map_colour);
+        // A second bitmap is generated for sizing purposes.  This is the bitmap that will be used for everything
+        bm = Bitmap.createScaledBitmap(originalBitMap, 4000, 4000, false);
         iv.setImageBitmap(bm);
 
         // Initial touch event in the ImageView
@@ -109,6 +158,39 @@ public class MainActivity extends AppCompatActivity {
                         event.getX(), event.getY()
                 };
                 inverse.mapPoints(pts);
+
+
+                if (currentMode == 1) {
+                    // The following conditionals allow differentiation between a tap and a drag gesture
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        startClickTime = System.currentTimeMillis();
+                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                        if (System.currentTimeMillis() - startClickTime < ViewConfiguration.getTapTimeout()) {
+                            if (!point) {
+                                xInt1 = Math.round(pts[0]);
+                                yInt1 = Math.round(pts[1]);
+                            } else {
+                                xInt2 = Math.round(pts[0]);
+                                yInt2 = Math.round(pts[1]);
+                            }
+
+                            if (point) {
+                                DrawLine();
+                            }
+
+                            if (point) {
+                                point = false;
+                            } else {
+                                point = true;
+                            }
+                        } else {
+                            return false;
+                        }
+                    }
+                } else if (currentMode == 2) {
+                    Toast.makeText(MainActivity.this, "Will be implemented later", Toast.LENGTH_SHORT).show();
+                }
+
                 // The coordinates for the pixel
                 if (!point) {
                     xInt1 = Math.round(pts[0]);
