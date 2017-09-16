@@ -22,6 +22,75 @@ public class MainActivity extends AppCompatActivity {
     private long startClickTime;
     private int currentMode = 1;
     TextView modeTextView;
+    public int xInt1;
+    public int yInt1;
+    public int xInt2;
+    public int yInt2;
+    boolean point = false;
+    ImageView iv;
+    Bitmap bm;
+
+    public void DrawLine() {
+
+        int x0 = xInt2;
+        int x1 = xInt1;
+        int y0 = yInt2;
+        int y1 = yInt1;
+
+        int dx = x0 - x1;
+        int dy = y0 - y1;
+
+        int dx1 = 0; int dy1 = 0; int dx2 = 0; int dy2 = 0;
+
+        if (dx < 0) {
+            dx1 = -1;
+            dx2 = -1;
+        }
+        else if (dx > 0) {
+            dx1 = 1;
+            dx2 = 1;
+        }
+
+        if (dy < 0)
+            dy1 = -1;
+        else if (dy > 0)
+            dy1 = 1;
+
+        int longest = Math.abs(dx);
+        int shortest = Math.abs(dy);
+
+        if (!(longest>shortest)) {
+            longest = Math.abs(dy);
+            shortest = Math.abs(dx);
+            if (dy < 0)
+                dy2 = -1;
+            else if (dy > 0)
+                dy2 = 1;
+            dx2 = 0 ;
+        }
+
+        int numerator = longest >> 1;
+        for (int n = 0; n <= longest; n++) {
+
+            for (int i = x1 - 5; i < x1 + 5; i++) {
+                for (int j = y1 - 5; j < y1 + 5; j++) {
+                    bm.setPixel(i, j, Color.rgb(255, 0, 0));
+                }
+            }
+
+            numerator += shortest;
+            if (!(numerator<longest)) {
+                numerator -= longest;
+                x1 += dx1;
+                y1 += dy1;
+            } else {
+                x1 += dx2;
+                y1 += dy2;
+            }
+            //g.drawImage(image,x1,y1,null);
+        }
+        iv.setImageBitmap(bm);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +130,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        final ImageView iv = (ImageView) findViewById(R.id.map_image);
+        iv = (ImageView) findViewById(R.id.map_image);
         // Create a MUTABLE bitmap
         final Bitmap originalBitMap = getMutableBitmap(getResources(), R.drawable.map_colour);
         // A second bitmap is generated for sizing purposes.  This is the bitmap that will be used for everything
-        final Bitmap resizedBitMap = Bitmap.createScaledBitmap(originalBitMap, 4000, 4000, false);
-        iv.setImageBitmap(resizedBitMap);
+        bm = Bitmap.createScaledBitmap(originalBitMap, 4000, 4000, false);
+        iv.setImageBitmap(bm);
 
         // Listens for touch events in the ImageView
         View.OnTouchListener otl = new View.OnTouchListener() {
@@ -79,9 +148,6 @@ public class MainActivity extends AppCompatActivity {
                         event.getX(), event.getY()
                 };
                 inverse.mapPoints(pts);
-                // The coordinates for the pixel
-                int xInt = Math.round(pts[0]);
-                int yInt = Math.round(pts[1]);
 
                 if (currentMode == 1) {
                     // The following conditionals allow differentiation between a tap and a drag gesture
@@ -89,12 +155,23 @@ public class MainActivity extends AppCompatActivity {
                         startClickTime = System.currentTimeMillis();
                     } else if (event.getAction() == MotionEvent.ACTION_UP) {
                         if (System.currentTimeMillis() - startClickTime < ViewConfiguration.getTapTimeout()) {
-                            for (int i = 0; i < xInt; i++) {
-                                for (int j = 0; j < yInt; j++) {
-                                    resizedBitMap.setPixel(i, j, Color.rgb(255, 0, 0));
-                                }
+                            if (!point) {
+                                xInt1 = Math.round(pts[0]);
+                                yInt1 = Math.round(pts[1]);
+                            } else {
+                                xInt2 = Math.round(pts[0]);
+                                yInt2 = Math.round(pts[1]);
                             }
-                            iv.setImageBitmap(resizedBitMap);
+
+                            if (point) {
+                                DrawLine();
+                            }
+
+                            if (point) {
+                                point = false;
+                            } else {
+                                point = true;
+                            }
                         } else {
                             return false;
                         }
