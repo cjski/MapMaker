@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     ImageView iv;
     Bitmap bm;
 
+    public Node[][] grid;
+  
     public void DrawLine() {
         int x0 = xInt2;
         int x1 = xInt1;
@@ -146,6 +148,14 @@ public class MainActivity extends AppCompatActivity {
         // A second bitmap is generated for sizing purposes.  This is the bitmap that will be used for everything
         bm = Bitmap.createScaledBitmap(originalBitMap, 4000, 4000, false);
         iv.setImageBitmap(bm);
+
+        //generate grid of nodes
+        grid = new Node[bm.getWidth()/4][bm.getHeight()/4];
+        for (int i = 0; i < bm.getWidth()/4; i++) {
+            for (int j = 0; j < bm.getHeight(); j++) {
+                grid[i][j] = new Node(i,j,true);
+            }
+        }
 
         // Initial touch event in the ImageView
         View.OnTouchListener otl = new View.OnTouchListener() {
