@@ -1,3 +1,5 @@
+package JanowskiLuoYabut.HackTheNorth.MapMaker;
+
 import java.util.ArrayList;
 /**
  * Class that handles the a* algorithm and finds the shortest path between the given nodes

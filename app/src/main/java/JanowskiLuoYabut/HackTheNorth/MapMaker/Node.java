@@ -1,3 +1,4 @@
+package JanowskiLuoYabut.HackTheNorth.MapMaker;
 //Class to hold information for all nodes in the map
 public class Node {
 	

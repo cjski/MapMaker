@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
                     bm.setPixel(i, j, Color.rgb(255, 0, 0));
                 }
             }
+            grid[x1/4][y1/4].walkable = false;
+            grid[(x1+1)/4][y1/4].walkable = false;
 
             numerator += shortest;
             if (!(numerator<longest)) {
@@ -89,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 x1 += dx2;
                 y1 += dy2;
             }
-            //g.drawImage(image,x1,y1,null);
         }
         iv.setImageBitmap(bm);
     }
@@ -124,10 +125,10 @@ public class MainActivity extends AppCompatActivity {
                 endPathButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        xInt1 = -1;
-                        xInt2 = -1;
-                        yInt1 = -1;
-                        yInt2 = -1;
+                        xInt1 = 0;
+                        xInt2 = 0;
+                        yInt1 = 0;
+                        yInt2 = 0;
                     }
                 });
             }
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         //generate grid of nodes
         grid = new Node[bm.getWidth()/4][bm.getHeight()/4];
         for (int i = 0; i < bm.getWidth()/4; i++) {
-            for (int j = 0; j < bm.getHeight(); j++) {
+            for (int j = 0; j < bm.getHeight()/4; j++) {
                 grid[i][j] = new Node(i,j,true);
             }
         }
@@ -176,6 +177,35 @@ public class MainActivity extends AppCompatActivity {
                         startClickTime = System.currentTimeMillis();
                     } else if (event.getAction() == MotionEvent.ACTION_UP) {
                         if (System.currentTimeMillis() - startClickTime < ViewConfiguration.getTapTimeout()) {
+
+                            if (xInt1 == 0 && yInt1 == 0) {
+                                xInt1 = Math.round(pts[0]);
+                                yInt1 = Math.round(pts[1]);
+                            }
+
+                            else if (xInt1 != 0 && yInt1 != 0 && xInt2 == 0 && yInt2 == 0){
+                                xInt2 = Math.round(pts[0]);
+                                yInt2 = Math.round(pts[1]);
+                                DrawLine();
+                                xInt1 = xInt2;
+                                yInt1 = yInt2;
+                            }
+
+                            else {
+                                xInt2 = Math.round(pts[0]);
+                                yInt2 = Math.round(pts[1]);
+                                DrawLine();
+                                xInt1 = xInt2;
+                                yInt1 = yInt2;
+                                /*
+                                if(point)
+                                    point = false;
+                                else if (!point)
+                                    point = true;
+                                */
+                            }
+
+                            /*
                             if (!point) {
                                 xInt1 = Math.round(pts[0]);
                                 yInt1 = Math.round(pts[1]);
@@ -193,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 point = true;
                             }
+                            */
                         } else {
                             return false;
                         }
@@ -202,35 +233,6 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // The coordinates for the pixel
-                if (!point) {
-                    xInt1 = Math.round(pts[0]);
-                    yInt1 = Math.round(pts[1]);
-                    Log.v("Y value", String.valueOf(yInt1));
-                } else {
-                    xInt2 = Math.round(pts[0]);
-                    yInt2 = Math.round(pts[1]);
-                    Log.v("Y value", String.valueOf(bm.getHeight()));
-                }
-
-                if (point) {
-                    DrawLine();
-                }
-
-                if (point) {
-                    point = false;
-                } else {
-                    point = true;
-                }
-
-                /*
-                // Reference for setting pixel color
-                for(int i = 0; i < xInt1; i++) {
-                    for(int j = 0; j < yInt1; j++) {
-                        bm.setPixel(i, j, Color.rgb(255,0,0));
-                        iv.setImageBitmap(bm);
-                    }
-                }
-                */
                 return true;
             }
         };
