@@ -1,4 +1,4 @@
-package project.yabut.mapmaker;
+package JanowskiLuoYabut.HackTheNorth.MapMaker;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

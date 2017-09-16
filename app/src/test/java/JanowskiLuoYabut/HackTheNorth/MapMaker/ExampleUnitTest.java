@@ -1,4 +1,4 @@
-package project.yabut.mapmaker;
+package JanowskiLuoYabut.HackTheNorth.MapMaker;
 
 import org.junit.Test;
 
