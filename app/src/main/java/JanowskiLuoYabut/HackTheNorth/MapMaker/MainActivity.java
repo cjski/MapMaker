@@ -1,7 +1,9 @@
 package JanowskiLuoYabut.HackTheNorth.MapMaker;
 
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
