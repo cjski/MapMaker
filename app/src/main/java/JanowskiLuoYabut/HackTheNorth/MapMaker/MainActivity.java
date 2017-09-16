@@ -9,12 +9,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 
 public class MainActivity extends AppCompatActivity {
+
+    private long startClickTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +28,13 @@ public class MainActivity extends AppCompatActivity {
         final ImageView iv = (ImageView) findViewById(R.id.map_image);
         // Create a MUTABLE bitmap
         final Bitmap bm = getMutableBitmap(getResources(), R.drawable.map_colour);
-        iv.setImageBitmap(bm);
+        final Bitmap bm2 = Bitmap.createScaledBitmap(bm, 2500, 2500, false);
+        iv.setImageBitmap(bm2);
 
         // Listens for touch events in the ImageView
         View.OnTouchListener otl = new View.OnTouchListener() {
             Matrix inverse = new Matrix();
+
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 iv.getImageMatrix().invert(inverse);
@@ -41,10 +46,25 @@ public class MainActivity extends AppCompatActivity {
                 int xInt = Math.round(pts[0]);
                 int yInt = Math.round(pts[1]);
 
-                // Reference for setting pixel color
-                // bm.setPixel(xInt, yInt, Color.rgb(255,0,0));
-                // iv.setImageBitmap(bm);
-                return false;
+                // The following conditionals allow differentiation between a tap and a drag gesture
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+
+                    startClickTime = System.currentTimeMillis();
+
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+
+                    if (System.currentTimeMillis() - startClickTime < ViewConfiguration.getTapTimeout()) {
+
+                        for (int i = 0; i < xInt; i++) {
+                            for (int j = 0; j < yInt; j++) {
+                                bm2.setPixel(i, j, Color.rgb(255, 0, 0));
+                            }
+                        }
+                        iv.setImageBitmap(bm2);
+                    }
+
+                }
+                return true;
             }
         };
         iv.setOnTouchListener(otl);
