@@ -1,7 +1,9 @@
 package JanowskiLuoYabut.HackTheNorth.MapMaker;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.util.Log;
-
+import android.widget.ImageView;
 import java.util.ArrayList;
 /**
  * Class that handles the a* algorithm and finds the shortest path between the given nodes
@@ -28,7 +30,9 @@ public class Astar {
 	 */
 	public int getDist(Node n0, Node n1){
 		//Scales the value up by ten and rounds to an integer to save memory
-		return (int) (10*Math.sqrt(Math.pow(n0.x - n1.x, 2) + Math.pow(n0.y-n1.y, 2)));
+
+		//return (int) (10*Math.sqrt(Math.pow(n0.x - n1.x, 2) + Math.pow(n0.y-n1.y, 2)));
+		return Math.abs(n0.x-n1.x)+Math.abs(n0.y-n1.y);
 	}
 	
 	/**
@@ -49,7 +53,7 @@ public class Astar {
 					//Avoids checking the node as a neighbour
 					if(!(x==0&&y==0)){
 						//If the node is walkable it is added to the list
-						if(grid[n.x+x][n.y+y].walkable){
+						if(grid[n.x+x][n.y+y]!= null){
 							neighbours.add(grid[n.x+x][n.y+y]);
 						}
 					}
@@ -69,7 +73,7 @@ public class Astar {
 	 * @param maxY - limit of grid size in y
 	 * @return list of nodes to follow to find shortest path
 	 */
-	public ArrayList<Node> getShortestPath(Node start, Node end, Node[][] grid, int maxX, int maxY){
+	public void getShortestPath(Node start, Node end, Node[][] grid, int maxX, int maxY, ImageView iv, Bitmap bm){
 		//List of open nodes to visit next
 		ArrayList<Node> open = new ArrayList<Node>();
 		//List of closed nodes that have been visited
@@ -156,24 +160,35 @@ public class Astar {
 			//Check if the path has reached the end
 			if(curr.equals(end)){
 				//Create a list of nodes to return as the path
-				ArrayList<Node> path = new ArrayList<Node>();
+
 				//Keeps adding nodes into the path backwards
 				while(curr.parent != null){
-					path.add(curr);
+
+					for (int j = 75*curr.x - 20; j < 75*curr.x + 20; j++) {
+						for (int k = 75*curr.y - 20; k < 75*curr.y + 20; k++) {
+							bm.setPixel(j, k, Color.rgb(0, 0, 255));
+						}
+					}
+					iv.setImageBitmap(bm);
 					curr = curr.parent;
 				}
 				//Adds the last node into the path
-				path.add(curr);
+				for (int j = 75*curr.x - 20; j < 75*curr.x + 20; j++) {
+					for (int k = 75 * curr.y - 20; k < 75 * curr.y + 20; k++) {
+						bm.setPixel(j, k, Color.rgb(0, 0, 255));
+					}
+				}
+				return;
 				//prints out path to console - TESTING PURPOSES
-				//this.outPath(path);
-				return path;
+				//this.outPath(path)
 			}
 			open.remove(curr);
 		}
 		
 		//If no possible path exists return an empty list
-		ArrayList<Node> empty = new ArrayList<Node>();
-		return empty;
+		open.clear();
+		closed.clear();
+		return;
 	}
 	
 	/**

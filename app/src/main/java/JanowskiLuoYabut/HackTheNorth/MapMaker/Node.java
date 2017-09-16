@@ -1,8 +1,7 @@
 package JanowskiLuoYabut.HackTheNorth.MapMaker;
 //Class to hold information for all nodes in the map
 public class Node {
-	
-	public boolean walkable;
+
 	public int x;
 	public int y;
 	public int sCost;
@@ -10,10 +9,9 @@ public class Node {
 	public int tCost;
 	public Node parent;
 	
-	public Node(int x0, int y0, boolean w0){
+	public Node(int x0, int y0){
 		this.x = x0;
 		this.y = y0;
-		this.walkable = w0;
 		this.sCost = 0;
 		this.eCost = 0;
 		this.tCost = 0;
