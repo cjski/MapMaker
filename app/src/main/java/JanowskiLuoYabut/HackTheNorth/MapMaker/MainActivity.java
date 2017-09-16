@@ -77,14 +77,14 @@ public class MainActivity extends AppCompatActivity {
         int numerator = longest >> 1;
         for (int n = 0; n <= longest; n++) {
 
-            for (int i = x1 - 5; i < x1 + 5; i++) {
-                for (int j = y1 - 5; j < y1 + 5; j++) {
-                    bm.setPixel(i, j, Color.rgb(255, 0, 0));
+            for (int i = x1 - 10; i < x1 + 10; i++) {
+                for (int j = y1 - 10; j < y1 + 10; j++) {
+                    bm.setPixel(i, j, Color.rgb(242, 242, 198));
                 }
             }
-            grid[x1/75][y1/75] = new Node(x1/75,y1/75);
-            grid[(x1+10)/75][y1/75] = new Node((x1+10)/75,y1/75);
-            grid[(x1-10)/75][y1/75] = new Node((x1-10)/75,y1/75);
+            grid[x1/25][y1/25] = new Node(x1/25,y1/25);
+            grid[(x1+10)/25][y1/25] = new Node((x1+10)/25,y1/25);
+            grid[(x1-10)/25][y1/25] = new Node((x1-10)/25,y1/25);
 
             numerator += shortest;
             if (!(numerator<longest)) {
@@ -164,10 +164,10 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if (mNodes.size() > 1) {
                             for (int i = 0; i < mNodes.size() - 1; i++) {
-                                mAstar.getShortestPath(mNodes.get(i), mNodes.get(i + 1), grid, bm.getWidth()/75, bm.getHeight()/75,iv,bm);
+                                mAstar.getShortestPath(mNodes.get(i), mNodes.get(i + 1), grid, bm.getWidth()/25, bm.getHeight()/25,iv,bm);
 
-                                for(int n=0;n<bm.getWidth()/75;n++){
-                                    for (int m = 0; m < bm.getHeight()/75; m++) {
+                                for(int n=0;n<bm.getWidth()/25;n++){
+                                    for (int m = 0; m < bm.getHeight()/25; m++) {
                                         if(grid[n][m] != null){
                                             grid[n][m].parent = null;
                                             grid[n][m].sCost = 0;
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
         iv.setImageBitmap(bm);
 
         //generate grid of nodes
-        grid = new Node[bm.getWidth()/75][bm.getHeight()/75];
+        grid = new Node[bm.getWidth()/25][bm.getHeight()/25];
         /*
         for (int i = 0; i < bm.getWidth()/75; i++) {
             for (int j = 0; j < bm.getHeight()/75; j++) {
@@ -251,11 +251,11 @@ public class MainActivity extends AppCompatActivity {
                         if (System.currentTimeMillis() - startClickTime < ViewConfiguration.getTapTimeout()) {
                             int xPos = Math.round(pts[0]);
                             int yPos = Math.round(pts[1]);
-                            if (grid[xPos/75][yPos/75] != null) {
-                                mNodes.add(grid[ xPos / 75][(yPos / 75)]);
-                                for (int i = xPos - 20; i < xPos + 20; i++) {
-                                    for (int j = yPos - 20; j < yPos + 20; j++) {
-                                        bm.setPixel(i, j, Color.rgb(0, 0, 255));
+                            if (grid[xPos/25][yPos/25] != null) {
+                                mNodes.add(grid[ xPos / 25][(yPos / 25)]);
+                                for (int i = xPos - 25; i < xPos + 25; i++) {
+                                    for (int j = yPos - 25; j < yPos + 25; j++) {
+                                        bm.setPixel(i, j, Color.rgb(90, 175, 226));
                                     }
                                 }
                                 iv.setImageBitmap(bm);
