@@ -17,11 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private long startClickTime;
-    private int currentMode = 1;
+    private int currentMode = 0;
     Button endPathButton;
     public int xInt1;
     public int yInt1;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     boolean point = false;
     ImageView iv;
     Bitmap bm;
+    ArrayList<Node> mNodes = new ArrayList<Node>();
+    Astar mAstar = new Astar();
 
     public Node[][] grid;
   
@@ -79,8 +82,9 @@ public class MainActivity extends AppCompatActivity {
                     bm.setPixel(i, j, Color.rgb(255, 0, 0));
                 }
             }
-            grid[x1/4][y1/4].walkable = false;
-            grid[(x1+1)/4][y1/4].walkable = false;
+            grid[x1/75][y1/75].walkable = true;
+            grid[(x1+10)/75][y1/75].walkable = true;
+            grid[(x1-10)/75][y1/75].walkable = true;
 
             numerator += shortest;
             if (!(numerator<longest)) {
@@ -116,11 +120,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void initViews() {
         endPathButton = (Button) findViewById(R.id.end_path_button);
+        if (currentMode == 0) {
+            endPathButton.setVisibility(View.GONE);
+        }
         Button drawModeButton = (Button) findViewById(R.id.draw_mode_button);
         drawModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 currentMode = 1;
+                endPathButton.setVisibility(View.VISIBLE);
                 endPathButton.setText("End Path");
                 endPathButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -139,7 +147,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 currentMode = 2;
+                endPathButton.setVisibility(View.VISIBLE);
                 endPathButton.setText("Get Shortest Path");
+                endPathButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mNodes.size() > 1) {
+                            for (int i = 0; i < mNodes.size() - 1; i++) {
+                                ArrayList<Node> path = mAstar.getShortestPath(mNodes.get(i), mNodes.get(i + 1), grid, bm.getWidth()/75, bm.getHeight()/75);
+
+                                for (Node n0:path) {
+                                    for (int j = 75*n0.x - 20; j < 75*n0.x + 20; j++) {
+                                        for (int k = 75*n0.y - 20; k < 75*n0.y + 20; k++) {
+                                            bm.setPixel(j, k, Color.rgb(0, 0, 255));
+                                        }
+                                    }
+                                    iv.setImageBitmap(bm);
+                                }
+                                path = null;
+                            }
+                        }
+                    }
+                });
             }
         });
 
@@ -151,10 +180,10 @@ public class MainActivity extends AppCompatActivity {
         iv.setImageBitmap(bm);
 
         //generate grid of nodes
-        grid = new Node[bm.getWidth()/4][bm.getHeight()/4];
-        for (int i = 0; i < bm.getWidth()/4; i++) {
-            for (int j = 0; j < bm.getHeight()/4; j++) {
-                grid[i][j] = new Node(i,j,true);
+        grid = new Node[bm.getWidth()/75][bm.getHeight()/75];
+        for (int i = 0; i < bm.getWidth()/75; i++) {
+            for (int j = 0; j < bm.getHeight()/75; j++) {
+                grid[i][j] = new Node(i,j,false);
             }
         }
 
@@ -229,9 +258,26 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 } else if (currentMode == 2) {
-                    Toast.makeText(MainActivity.this, "Will be implemented later", Toast.LENGTH_SHORT).show();
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        startClickTime = System.currentTimeMillis();
+                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                        if (System.currentTimeMillis() - startClickTime < ViewConfiguration.getTapTimeout()) {
+                            int xPos = Math.round(pts[0]);
+                            int yPos = Math.round(pts[1]);
+                            if (grid[xPos/75][yPos/75].walkable) {
+                                mNodes.add(grid[ xPos / 75][(yPos / 75)]);
+                                for (int i = xPos - 20; i < xPos + 20; i++) {
+                                    for (int j = yPos - 20; j < yPos + 20; j++) {
+                                        bm.setPixel(i, j, Color.rgb(0, 0, 255));
+                                    }
+                                }
+                                iv.setImageBitmap(bm);
+                            }
+                        } else {
+                            return false;
+                        }
+                    }
                 }
-
                 // The coordinates for the pixel
                 return true;
             }
