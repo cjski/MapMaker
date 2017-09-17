@@ -23,7 +23,7 @@ public class Astar {
 	}
 	
 	/**
-	 * Returns the distance between 2 nodes
+	 * Returns the distance between 2 nodes - Manhattan
 	 * @param n0 - first node
 	 * @param n1 - second node
 	 * @return int distance
