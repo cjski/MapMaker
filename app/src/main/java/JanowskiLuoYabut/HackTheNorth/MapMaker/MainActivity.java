@@ -44,6 +44,75 @@ public class MainActivity extends AppCompatActivity {
 
     public Node[][] grid;
 
+    public ArrayList<Line> lines = new ArrayList<Line>();
+
+    public class Line{
+        int xa;
+        int xb;
+        int ya;
+        int yb;
+        public Line(int xa,int xb,int ya,int yb){
+            this.xa=xa;
+            this.xb=xb;
+            this.ya=ya;
+            this.yb=yb;
+        }
+        public void DrawLine(){
+            int dx = xa - xb;
+            int dy = ya - yb;
+
+            int dx1 = 0; int dy1 = 0; int dx2 = 0; int dy2 = 0;
+
+            if (dx < 0) {
+                dx1 = -1;
+                dx2 = -1;
+            }
+            else if (dx > 0) {
+                dx1 = 1;
+                dx2 = 1;
+            }
+
+            if (dy < 0)
+                dy1 = -1;
+            else if (dy > 0)
+                dy1 = 1;
+
+            int longest = Math.abs(dx);
+            int shortest = Math.abs(dy);
+
+            if (!(longest>shortest)) {
+                longest = Math.abs(dy);
+                shortest = Math.abs(dx);
+                if (dy < 0)
+                    dy2 = -1;
+                else if (dy > 0)
+                    dy2 = 1;
+                dx2 = 0 ;
+            }
+
+            int numerator = longest >> 1;
+            for (int n = 0; n <= longest; n++) {
+
+                for (int i = xb - 12; i < xb + 12; i++) {
+                    for (int j = yb- 12; j < yb + 12; j++) {
+                        bmpath.setPixel(i, j, Color.rgb(242, 242, 198));
+                    }
+                }
+                grid[xb/25][yb/25] = new Node(xb/25,yb/25);
+                grid[(xb+5)/25][yb/25] = new Node((xb+5)/25,yb/25);
+
+                numerator += shortest;
+                if (!(numerator<longest)) {
+                    numerator -= longest;
+                    xb += dx1;
+                    yb += dy1;
+                } else {
+                    xb += dx2;
+                    yb += dy2;
+                }
+            }
+        }
+    }
     public void DrawLine() {
         int x0 = xInt2;
         int x1 = xInt1;
@@ -88,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
             for (int i = x1 - 12; i < x1 + 12; i++) {
                 for (int j = y1 - 12; j < y1 + 12; j++) {
                     bm.setPixel(i, j, Color.rgb(242, 242, 198));
-                    bmpath.setPixel(i, j, Color.rgb(242, 242, 198));
                 }
             }
             grid[x1/25][y1/25] = new Node(x1/25,y1/25);
@@ -229,6 +297,10 @@ public class MainActivity extends AppCompatActivity {
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                for(Line l:lines){
+                    l.DrawLine();
+                }
                 bm = Bitmap.createScaledBitmap(bmpath,bmpath.getWidth(),bmpath.getHeight(),false);
                 iv.setImageBitmap(bm);
                 mNodes.clear();
@@ -278,6 +350,7 @@ public class MainActivity extends AppCompatActivity {
                             else if (xInt1 != 0 && yInt1 != 0 && xInt2 == 0 && yInt2 == 0){
                                 xInt2 = Math.round(pts[0]);
                                 yInt2 = Math.round(pts[1]);
+                                lines.add(new Line(xInt2,xInt1,yInt2,yInt1));
                                 DrawLine();
                                 xInt1 = xInt2;
                                 yInt1 = yInt2;
@@ -286,6 +359,7 @@ public class MainActivity extends AppCompatActivity {
                             else {
                                 xInt2 = Math.round(pts[0]);
                                 yInt2 = Math.round(pts[1]);
+                                lines.add(new Line(xInt2,xInt1,yInt2,yInt1));
                                 DrawLine();
                                 xInt1 = xInt2;
                                 yInt1 = yInt2;
