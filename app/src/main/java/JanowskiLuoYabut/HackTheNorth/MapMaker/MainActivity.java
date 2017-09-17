@@ -1,11 +1,14 @@
 package JanowskiLuoYabut.HackTheNorth.MapMaker;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,10 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int GET_FROM_GALLERY = 3;
     private long startClickTime;
     private int currentMode = 0;
     Button endPathButton;
@@ -83,8 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             grid[x1/25][y1/25] = new Node(x1/25,y1/25);
-            grid[(x1+10)/25][y1/25] = new Node((x1+10)/25,y1/25);
-            grid[(x1-10)/25][y1/25] = new Node((x1-10)/25,y1/25);
+            grid[(x1+5)/25][y1/25] = new Node((x1+5)/25,y1/25);
 
             numerator += shortest;
             if (!(numerator<longest)) {
@@ -115,6 +120,28 @@ public class MainActivity extends AppCompatActivity {
             endPathButton.setText("End Path");
         } else {
             endPathButton.setText("Get Shortest Path");
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Detects request codes
+        if(requestCode==GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+            Uri selectedImage = data.getData();
+            /*
+            bm = null;
+            try {
+                bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            */
         }
     }
 
@@ -181,6 +208,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
+        });
+
+        Button uploadImageButton = (Button) findViewById(R.id.upload_image_button);
+        uploadImageButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+             public void onClick(View v) {
+                startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
+             }
         });
 
         iv = (ImageView) findViewById(R.id.map_image);

@@ -52,6 +52,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:id="@+id/end_path_button" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload Image"
+        android:id="@+id/upload_image_button"/>
 
 </LinearLayout>
 
