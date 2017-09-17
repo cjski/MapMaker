@@ -191,8 +191,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         if (mNodes.size() > 1) {
                             for (int i = 0; i < mNodes.size() - 1; i++) {
-                                mAstar.getShortestPath(mNodes.get(i), mNodes.get(i + 1), grid, bm.getWidth()/25, bm.getHeight()/25,iv,bm);
-
+                                int dist = mAstar.getShortestPath(mNodes.get(i), mNodes.get(i + 1), grid, bm.getWidth()/25, bm.getHeight()/25,iv,bm);
+                                
                                 for(int n=0;n<bm.getWidth()/25;n++){
                                     for (int m = 0; m < bm.getHeight()/25; m++) {
                                         if(grid[n][m] != null){

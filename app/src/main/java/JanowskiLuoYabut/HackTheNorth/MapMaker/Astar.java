@@ -29,10 +29,10 @@ public class Astar {
 	 * @return int distance
 	 */
 	public int getDist(Node n0, Node n1){
-		//Scales the value up by ten and rounds to an integer to save memory
+		//Scales the value up by 25 and rounds to an integer to save memory
 
-		//return (int) (10*Math.sqrt(Math.pow(n0.x - n1.x, 2) + Math.pow(n0.y-n1.y, 2)));
-		return Math.abs(n0.x-n1.x)+Math.abs(n0.y-n1.y);
+		return (int) (25*Math.sqrt(Math.pow(n0.x - n1.x, 2) + Math.pow(n0.y-n1.y, 2)));
+		//return Math.abs(n0.x-n1.x)+Math.abs(n0.y-n1.y);
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class Astar {
 	 * @param maxY - limit of grid size in y
 	 * @return list of nodes to follow to find shortest path
 	 */
-	public void getShortestPath(Node start, Node end, Node[][] grid, int maxX, int maxY, ImageView iv, Bitmap bm){
+	public int getShortestPath(Node start, Node end, Node[][] grid, int maxX, int maxY, ImageView iv, Bitmap bm){
 		//List of open nodes to visit next
 		ArrayList<Node> open = new ArrayList<Node>();
 		//List of closed nodes that have been visited
@@ -165,11 +165,10 @@ public class Astar {
 				while(curr.parent != null){
 
 					for (int j = 25*curr.x - 7; j < 25*curr.x + 7; j++) {
-						for (int k = 25*curr.y - 7; k < 25*curr.y + 7; k++) {
-                            bm.setPixel(j, k, Color.rgb(198, 42, 42));
+						for (int k = 25 * curr.y - 7; k < 25 * curr.y + 7; k++) {
+							bm.setPixel(j, k, Color.rgb(198, 42, 42));
 						}
 					}
-					iv.setImageBitmap(bm);
 					curr = curr.parent;
 				}
 				//Adds the last node into the path
@@ -178,7 +177,7 @@ public class Astar {
 						bm.setPixel(j, k, Color.rgb(198, 42, 42));
 					}
 				}
-				return;
+				return curr.tCost;
 				//prints out path to console - TESTING PURPOSES
 				//this.outPath(path)
 			}
@@ -188,7 +187,7 @@ public class Astar {
 		//If no possible path exists return an empty list
 		open.clear();
 		closed.clear();
-		return;
+		return 0;
 	}
 	
 	/**
