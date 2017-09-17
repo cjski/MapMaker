@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:background="@color/colorPrimary">
 
     <HorizontalScrollView
+        android:id="@+id/image_holder"
         android:layout_width="match_parent"
         android:layout_height="500dp">
 
@@ -22,8 +22,10 @@
     </HorizontalScrollView>
 
     <LinearLayout
+        android:id="@+id/first_button_row"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_holder">
 
         <Button
             android:layout_width="0dp"
@@ -43,30 +45,42 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Help"
-            android:id="@+id/help_button"/>
+            android:text="Undo"
+            android:id="@+id/undo_button"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/second_button_row"
+        android:layout_below="@+id/first_button_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Undo"
-            android:id="@+id/undo_button"/>
+            android:layout_gravity="center"
+            android:text="Upload Image"
+            android:id="@+id/upload_image_button"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/end_path_button" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Help"
+            android:id="@+id/help_button"/>
+
+
     </LinearLayout>
 
-    <Button
-        android:layout_width="137dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:id="@+id/end_path_button" />
 
-    <Button
-        android:layout_width="137dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Upload Image"
-        android:id="@+id/upload_image_button"/>
-
-</LinearLayout>
+</RelativeLayout>
 
 

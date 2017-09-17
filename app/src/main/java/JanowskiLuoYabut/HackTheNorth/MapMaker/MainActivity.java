@@ -133,10 +133,23 @@ public class MainActivity extends AppCompatActivity {
         //Detects request codes
         if(requestCode==GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
             Uri selectedImage = data.getData();
-            /*
             bm = null;
             try {
                 bm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                bm = Bitmap.createScaledBitmap(bm, 2500, 2500, false);
+                bmpath = Bitmap.createScaledBitmap(bm,2500,2500,false);
+                iv.setImageBitmap(bm);
+
+                //generate grid of nodes
+                grid = new Node[bm.getWidth()/25][bm.getHeight()/25];
+                /*
+                for (int i = 0; i < bm.getWidth()/75; i++) {
+                    for (int j = 0; j < bm.getHeight()/75; j++) {
+                        grid[i][j] = new Node(i,j,false);
+                    }
+                }
+                */
+
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -144,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            */
         }
     }
 
@@ -188,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 currentMode = 2;
                 endPathButton.setVisibility(View.VISIBLE);
-                endPathButton.setText("Get Shortest Path");
+                endPathButton.setText("Get Path");
                 endPathButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -232,23 +244,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         iv = (ImageView) findViewById(R.id.map_image);
-        //ivpath = (ImageView) findViewById(R.id.map_image);
-        // Create a MUTABLE bitmap
-        final Bitmap originalBitMap = getMutableBitmap(getResources(), R.drawable.map_colour);
-        // A second bitmap is generated for sizing purposes.  This is the bitmap that will be used for everything
-        bm = Bitmap.createScaledBitmap(originalBitMap, 4000, 4000, false);
-        bmpath = Bitmap.createScaledBitmap(originalBitMap,4000,4000,false);
-        iv.setImageBitmap(bm);
+//        //ivpath = (ImageView) findViewById(R.id.map_image);
+//        // Create a MUTABLE bitmap
+//        final Bitmap originalBitMap = getMutableBitmap(getResources(), R.drawable.map_colour);
+//        // A second bitmap is generated for sizing purposes.  This is the bitmap that will be used for everything
+//        iv.setImageBitmap(bm);
 
-        //generate grid of nodes
-        grid = new Node[bm.getWidth()/25][bm.getHeight()/25];
-        /*
-        for (int i = 0; i < bm.getWidth()/75; i++) {
-            for (int j = 0; j < bm.getHeight()/75; j++) {
-                grid[i][j] = new Node(i,j,false);
-            }
-        }
-        */
+
         // Initial touch event in the ImageView
         View.OnTouchListener otl = new View.OnTouchListener() {
             Matrix inverse = new Matrix();
