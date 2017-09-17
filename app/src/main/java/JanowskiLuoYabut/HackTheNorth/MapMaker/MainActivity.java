@@ -77,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
         int numerator = longest >> 1;
         for (int n = 0; n <= longest; n++) {
 
-            for (int i = x1 - 10; i < x1 + 10; i++) {
-                for (int j = y1 - 10; j < y1 + 10; j++) {
+            for (int i = x1 - 12; i < x1 + 12; i++) {
+                for (int j = y1 - 12; j < y1 + 12; j++) {
                     bm.setPixel(i, j, Color.rgb(242, 242, 198));
                 }
             }
@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
                                 mNodes.add(grid[ xPos / 25][(yPos / 25)]);
                                 for (int i = xPos - 25; i < xPos + 25; i++) {
                                     for (int j = yPos - 25; j < yPos + 25; j++) {
-                                        bm.setPixel(i, j, Color.rgb(90, 175, 226));
+                                        bm.setPixel(i, j, Color.rgb(121, 16, 16));
                                     }
                                 }
                                 iv.setImageBitmap(bm);
