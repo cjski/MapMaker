@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
     public int xInt2;
     public int yInt2;
     ImageView iv;
+    ImageView ivpath;
     Bitmap bm;
+    Bitmap bmpath;
     ArrayList<Node> mNodes = new ArrayList<Node>();
     Astar mAstar = new Astar();
 
@@ -86,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
             for (int i = x1 - 12; i < x1 + 12; i++) {
                 for (int j = y1 - 12; j < y1 + 12; j++) {
                     bm.setPixel(i, j, Color.rgb(242, 242, 198));
+                    bmpath.setPixel(i, j, Color.rgb(242, 242, 198));
                 }
             }
             grid[x1/25][y1/25] = new Node(x1/25,y1/25);
@@ -210,6 +213,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button undoButton = (Button) findViewById(R.id.undo_button);
+        undoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bm = Bitmap.createScaledBitmap(bmpath,bmpath.getWidth(),bmpath.getHeight(),false);
+                iv.setImageBitmap(bm);
+                mNodes.clear();
+            }
+        });
+
         Button uploadImageButton = (Button) findViewById(R.id.upload_image_button);
         uploadImageButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -219,10 +232,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         iv = (ImageView) findViewById(R.id.map_image);
+        //ivpath = (ImageView) findViewById(R.id.map_image);
         // Create a MUTABLE bitmap
         final Bitmap originalBitMap = getMutableBitmap(getResources(), R.drawable.map_colour);
         // A second bitmap is generated for sizing purposes.  This is the bitmap that will be used for everything
         bm = Bitmap.createScaledBitmap(originalBitMap, 4000, 4000, false);
+        bmpath = Bitmap.createScaledBitmap(originalBitMap,4000,4000,false);
         iv.setImageBitmap(bm);
 
         //generate grid of nodes
@@ -245,7 +260,6 @@ public class MainActivity extends AppCompatActivity {
                         event.getX(), event.getY()
                 };
                 inverse.mapPoints(pts);
-
 
                 if (currentMode == 1) {
                     // The following conditionals allow differentiation between a tap and a drag gesture
