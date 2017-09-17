@@ -26,20 +26,23 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:layout_width="0dp"
+            android:layout_marginTop="4dp"
+            android:layout_width="25dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Draw Mode"
             android:id="@+id/draw_mode_button"/>
 
         <Button
-            android:layout_width="0dp"
+            android:layout_marginTop="4dp"
+            android:layout_width="25dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Path Mode"
             android:id="@+id/path_mode_button"/>
 
         <Button
+            android:layout_marginTop="4dp"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -47,6 +50,7 @@
             android:id="@+id/help_button"/>
 
         <Button
+            android:layout_marginTop="4dp"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
