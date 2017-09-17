@@ -31,8 +31,8 @@ public class Astar {
 	public int getDist(Node n0, Node n1){
 		//Scales the value up by 25 and rounds to an integer to save memory
 
-		return (int) (25*Math.sqrt(Math.pow(n0.x - n1.x, 2) + Math.pow(n0.y-n1.y, 2)));
-		//return Math.abs(n0.x-n1.x)+Math.abs(n0.y-n1.y);
+		//return (int) (25*Math.sqrt(Math.pow(n0.x - n1.x, 2) + Math.pow(n0.y-n1.y, 2)));
+		return Math.abs(n0.x-n1.x)+Math.abs(n0.y-n1.y);
 	}
 	
 	/**
