@@ -93,22 +93,22 @@ public class MainActivity extends AppCompatActivity {
             int numerator = longest >> 1;
             for (int n = 0; n <= longest; n++) {
 
-                for (int i = xa - 12; i < xa + 12; i++) {
-                    for (int j = ya - 12; j < ya + 12; j++) {
+                for (int i = xb - 12; i < xb + 12; i++) {
+                    for (int j = yb- 12; j < yb + 12; j++) {
                         bmpath.setPixel(i, j, Color.rgb(242, 242, 198));
                     }
                 }
-                grid[xa/25][ya/25] = new Node(xa/25,ya/25);
-                grid[(xa+5)/25][ya/25] = new Node((xa+5)/25,ya/25);
+                grid[xb/25][yb/25] = new Node(xb/25,yb/25);
+                grid[(xb+5)/25][yb/25] = new Node((xb+5)/25,yb/25);
 
                 numerator += shortest;
                 if (!(numerator<longest)) {
                     numerator -= longest;
-                    xa += dx1;
-                    ya += dy1;
+                    xb += dx1;
+                    yb += dy1;
                 } else {
-                    xa += dx2;
-                    ya += dy2;
+                    xb += dx2;
+                    yb += dy2;
                 }
             }
         }
@@ -350,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
                             else if (xInt1 != 0 && yInt1 != 0 && xInt2 == 0 && yInt2 == 0){
                                 xInt2 = Math.round(pts[0]);
                                 yInt2 = Math.round(pts[1]);
-                                lines.add(new Line(xInt1,xInt2,yInt1,yInt2));
+                                lines.add(new Line(xInt2,xInt1,yInt2,yInt1));
                                 DrawLine();
                                 xInt1 = xInt2;
                                 yInt1 = yInt2;
@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
                             else {
                                 xInt2 = Math.round(pts[0]);
                                 yInt2 = Math.round(pts[1]);
-                                lines.add(new Line(xInt1,xInt2,yInt1,yInt2));
+                                lines.add(new Line(xInt2,xInt1,yInt2,yInt1));
                                 DrawLine();
                                 xInt1 = xInt2;
                                 yInt1 = yInt2;
