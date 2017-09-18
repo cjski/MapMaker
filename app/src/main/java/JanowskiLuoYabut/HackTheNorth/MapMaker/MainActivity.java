@@ -29,21 +29,29 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int GET_FROM_GALLERY = 3;
     private long startClickTime;
+
+    // Determines whether or not the user is in Draw or Path mode (0 = neither, 1 = draw, 2 = path)
     private int currentMode = 0;
-    Button endPathButton;
+
+    // Used to determine the coordinates of user tap inpute
     public int xInt1;
     public int yInt1;
     public int xInt2;
     public int yInt2;
+
+    // Various objects that required decleration as global for the app
     ImageView iv;
     ImageView ivpath;
     Bitmap bm;
     Bitmap bmpath;
+    Button endPathButton;
+
+    // Objects for the path finding algorithm
     ArrayList<Node> mNodes = new ArrayList<Node>();
     Astar mAstar = new Astar();
-
     public Node[][] grid;
 
+    // Stores end points for undo and save functionality
     public ArrayList<Line> lines = new ArrayList<Line>();
 
     public class Line{
@@ -180,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         initViews();
     }
 
@@ -190,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         if (currentMode == 1) {
             endPathButton.setText("End Path");
         } else {
-            endPathButton.setText("Get Shortest Path");
+            endPathButton.setText("Get Path");
         }
     }
 
@@ -286,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
-                            }
+                            } iv.setImageBitmap(bm);
                         }
                     }
                 });
